@@ -264,13 +264,13 @@ const Form = () => {
           <button className="ml" onClick={() => reset()} type="button">
             Reset
           </button>
-          <button
+          {/* <button
             className="ml"
             onClick={() => console.log(errors)}
             type="button"
           >
             error
-          </button>
+          </button> */}
         </div>
       </form>
       <h2 style={{ color: "blue" }} className="ml">
