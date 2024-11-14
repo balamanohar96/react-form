@@ -33,10 +33,11 @@ const Form = () => {
         doorNum: "",
       },
       gender: "male",
-      age: 2,
+      age: undefined,
       date: undefined,
       hobbies: [{ hobby: "" }],
     },
+    mode: "onChange",
   });
   const { register, formState, handleSubmit, reset, control } = form;
   const { errors, isSubmitting, isSubmitSuccessful } = formState;
@@ -160,6 +161,7 @@ const Form = () => {
             type="number"
             {...register("age", {
               valueAsNumber: true,
+              required: "please enter age",
               validate: (value) => {
                 if (value < 18) {
                   return "should be atleast 18 years old";
@@ -168,15 +170,6 @@ const Form = () => {
             })}
           ></input>
           <p className="error">{errors.age?.message}</p>
-        </div>
-        <div>
-          <label htmlFor="gender">Gender : </label>
-          <select id="gender" {...register("gender")}>
-            <option value="male">male</option>
-            <option value="female">female</option>
-            <option value="other">other</option>
-          </select>
-          <p className="error">{errors.password?.message}</p>
         </div>
         <div>
           <label htmlFor="dob">Date : </label>
@@ -190,6 +183,15 @@ const Form = () => {
           ></input>
           <p className="error">{errors.date?.message}</p>
         </div>
+        <div>
+          <label htmlFor="gender">Gender : </label>
+          <select id="gender" {...register("gender")}>
+            <option value="male">male</option>
+            <option value="female">female</option>
+            <option value="other">other</option>
+          </select>
+        </div>
+        
         {/*              */}
         <div>
           <h3>Hobbies</h3>
