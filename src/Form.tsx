@@ -6,10 +6,10 @@ type FormValues = {
   name: string;
   email: string;
   password: string;
-  mobileNumbers: string[];
+  mobileNumbers: number[];
   address: {
     city: string;
-    pincode: string;
+    pincode: number;
     area: string;
     doorNum: string;
   };
@@ -25,15 +25,15 @@ const Form = () => {
       name: "",
       email: "",
       password: "",
-      mobileNumbers: ["", ""],
+      mobileNumbers: [undefined, 0],
       address: {
         city: "",
-        pincode: "",
+        pincode: undefined,
         area: "",
         doorNum: "",
       },
       gender: "male",
-      age: 15,
+      age: 2,
       date: undefined,
       hobbies: [{ hobby: "" }],
     },
@@ -81,6 +81,7 @@ const Form = () => {
         ></input>
         <p className="error">{errors.name?.message}</p>
         {/*              */}
+
         <label htmlFor="email">Email : </label>
         <input
           id="email"
@@ -122,8 +123,17 @@ const Form = () => {
           id="number1"
           type="text"
           placeholder="mobile number"
-          {...register("mobileNumbers.0")}
+          {...register("mobileNumbers.0", {
+            valueAsNumber: true,
+            required: "number is required",
+            validate: (value) => {
+              if (String(value).length !== 10 || isNaN(value)) {
+                return "Enter valid number";
+              }
+            },
+          })}
         ></input>
+        {/* <p className="error">{errors.mobileNumbers[0]?.message}</p> */}
         {/*              */}
         <label className="ml" htmlFor="number2">
           Alternate mobile number :{" "}
@@ -132,7 +142,14 @@ const Form = () => {
           id="number2"
           type="text"
           placeholder="mobile number"
-          {...register("mobileNumbers.1")}
+          {...register("mobileNumbers.1", {
+            valueAsNumber: true,
+            validate: (value) => {
+              if (isNaN(value)) {
+                return "enter valid number";
+              }
+            },
+          })}
         ></input>
         {/*              */}
         <div className="mb">
@@ -214,7 +231,7 @@ const Form = () => {
           <label className="ml">Area : </label>
           <input
             type="text"
-            placeholder="area,street,village"
+            placeholder="area, street, village"
             {...register("address.area")}
           ></input>
           <label className="ml">House no. : </label>
@@ -227,8 +244,17 @@ const Form = () => {
           <input
             type="text"
             placeholder="pincode"
-            {...register("address.pincode", { valueAsNumber: true })}
+            {...register("address.pincode", {
+              required: "enter a pincode",
+              valueAsNumber: true,
+              validate: (value) => {
+                if (String(value).length !== 6 || isNaN(value)) {
+                  return "Enter valid pincode";
+                }
+              },
+            })}
           ></input>
+          {/* <p className="error">{errors.address?.pincode.message}</p> */}
         </div>
 
         <div className="center">
@@ -237,6 +263,13 @@ const Form = () => {
           </button>
           <button className="ml" onClick={() => reset()} type="button">
             Reset
+          </button>
+          <button
+            className="ml"
+            onClick={() => console.log(errors)}
+            type="button"
+          >
+            error
           </button>
         </div>
       </form>
